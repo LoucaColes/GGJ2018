@@ -24,6 +24,8 @@ public class Menu : MonoBehaviour
         m_buttonIndex = m_startIndex;
         m_player = ReInput.players.GetPlayer(0);
         m_timer = 0;
+        //AudioManager.AudioManager.m_instance.StopPlaying();
+        AudioManager.AudioManager.m_instance.PlayMusic(0);
     }
 
     // Update is called once per frame

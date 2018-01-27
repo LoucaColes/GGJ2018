@@ -77,12 +77,12 @@ public class PauseCanvas : MonoBehaviour
                 case "SFXMuteButton":
                     if (m_buttons[m_buttonIndex].image.sprite == m_sfxUnmuteImage)
                     {
-                        //AudioManager.AudioManager.m_instance.SetSfxGlobalVolume(0);
+                        AudioManager.AudioManager.m_instance.SetSfxGlobalVolume(0);
                         m_buttons[m_buttonIndex].image.sprite = m_sfxMuteImage;
                     }
                     else
                     {
-                        //AudioManager.AudioManager.m_instance.SetSfxGlobalVolume(1);
+                        AudioManager.AudioManager.m_instance.SetSfxGlobalVolume(1);
                         m_buttons[m_buttonIndex].image.sprite = m_sfxUnmuteImage;
                     }
                     break;
@@ -90,12 +90,12 @@ public class PauseCanvas : MonoBehaviour
                 case "MusicMuteButton":
                     if (m_buttons[m_buttonIndex].image.sprite == m_musicUnmuteImage)
                     {
-                        //AudioManager.AudioManager.m_instance.SetSfxGlobalVolume(0);
+                        AudioManager.AudioManager.m_instance.SetMusicGlobalVolume(0);
                         m_buttons[m_buttonIndex].image.sprite = m_musicMuteImage;
                     }
                     else
                     {
-                        //AudioManager.AudioManager.m_instance.SetSfxGlobalVolume(1);
+                        AudioManager.AudioManager.m_instance.SetMusicGlobalVolume(1);
                         m_buttons[m_buttonIndex].image.sprite = m_musicUnmuteImage;
                     }
                     break;
