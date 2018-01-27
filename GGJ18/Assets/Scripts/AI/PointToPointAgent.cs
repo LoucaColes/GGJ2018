@@ -156,4 +156,24 @@ public class PointToPointAgent : MonoBehaviour
     {
         m_agent.speed = _speed;
     }
+
+    public NavMeshPath GetPath()
+    {
+        return m_agent.path;
+    }
+
+    public Vector3 GetDirection()
+    {
+        return (m_agent.nextPosition - transform.position).normalized;
+    }
+
+    public float GetSpeed()
+    {
+        return m_agent.speed;
+    }
+
+    public Vector3 GetForce()
+    {
+        return GetDirection() * GetSpeed();
+    }
 }

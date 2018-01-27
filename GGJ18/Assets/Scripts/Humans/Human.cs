@@ -10,7 +10,7 @@ public class Human : MonoBehaviour
 
     public bool m_inputActive = false;
 
-    public Player m_player;
+    private Player m_player;
     private Rigidbody m_rb;
 
     public bool m_safe = true;
