@@ -13,4 +13,10 @@ EditorBuildSettings:
     guid: 20f2a00157dceef4e8469f6827683283
   - enabled: 1
     path: Assets/Scenes/GameTwoMenu.unity
+    guid: 6c765807d8688c5479230e2febd49acb
+  - enabled: 1
+    path: Assets/Scenes/GameOne.unity
+    guid: 011a28be721fb604cb5db7535767d023
+  - enabled: 1
+    path: Assets/Scenes/GameTwo.unity
     guid: 00000000000000000000000000000000
