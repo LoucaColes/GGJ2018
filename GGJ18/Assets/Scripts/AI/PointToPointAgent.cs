@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class PointToPointAgent : MonoBehaviour
 {
     public List<Transform> m_targets = new List<Transform>();
-    public float m_changeDistanceLimit = 0.1f;
+    public float m_changeDistanceLimit = 0.3f;
 
     private NavMeshAgent m_agent;
     public int m_destinationIndex = 0;
@@ -18,17 +18,6 @@ public class PointToPointAgent : MonoBehaviour
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.isStopped = false;
         //m_agent.SetDestination(m_targets[m_destinationIndex].position);
-    }
-	
-	void Update ()
-    {
-        //if (AtDestination())
-        //{
-        //    if (NextTargetIndex() != -1)
-        //    {
-        //        m_agent.SetDestination(m_targets[m_destinationIndex].position);
-        //    }
-        //}
     }
 
     public bool AtDestination()
@@ -81,6 +70,11 @@ public class PointToPointAgent : MonoBehaviour
         m_destinationIndex = _index;
     }
 
+    public void SetDestination(Vector3 _destination)
+    {
+        m_agent.SetDestination(_destination);
+    }
+
     public void AddTarget(Transform _target, int _insert = -1)
     {
         if(_insert != -1)
@@ -109,5 +103,15 @@ public class PointToPointAgent : MonoBehaviour
         {
             m_agent.SetDestination(m_targets[m_destinationIndex].position);
         }
+    }
+
+    public bool IsOnNavMesh()
+    {
+        return m_agent.isOnNavMesh;
+    }
+
+    public float DistanceToDestination()
+    {
+        return m_agent.remainingDistance;
     }
 }

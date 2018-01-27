@@ -3,9 +3,11 @@
 public class HumanRemovedEvent
 {
     public Transform Human;
+    public int HumanIndex;
 
-    public HumanRemovedEvent(Transform _human)
+    public HumanRemovedEvent(Transform _human, int _humanIndex)
     {
         Human = _human;
+        HumanIndex = _humanIndex;
     }
 }

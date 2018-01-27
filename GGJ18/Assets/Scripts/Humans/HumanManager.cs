@@ -87,10 +87,10 @@ public class HumanManager : MonoBehaviour
         m_humans.Remove(_human);
         m_humanIDs.Remove(ID);
 
-        HumanRemovedEvent data = new HumanRemovedEvent(_human.transform);
-        GlobalEventBoard.Instance.AddRapidEvent(Event.ZOM_HumanRemoved, data);
-
+        HumanRemovedEvent data = new HumanRemovedEvent(_human.transform, _human.m_ID);
         Destroy(_human.gameObject);
+
+        GlobalEventBoard.Instance.AddRapidEvent(Event.ZOM_HumanRemoved, data);
     }
 
     private int GenerateID()
@@ -104,5 +104,51 @@ public class HumanManager : MonoBehaviour
 
         m_humanIDs.Add(ID);
         return ID;
+    }
+
+    public Transform GetClosest(Vector3 _position, float _maxDistance = -1.0f)
+    {
+        Transform closest = null;
+        float shortestDistance = 0.0f;
+
+        bool useMaxDistance = false;
+        if(_maxDistance != -1.0f)
+        {
+            useMaxDistance = true;
+        }
+
+        m_navTester.position = _position;
+        foreach(Human human in m_humans)
+        {
+            if(!closest)
+            {
+                closest = human.transform;
+
+                m_agent.SetDestination(closest.position);
+                if (m_agent.hasPath)
+                {
+                    if (!useMaxDistance || (m_agent.remainingDistance <= _maxDistance))
+                    {
+                        shortestDistance = m_agent.remainingDistance;
+                    }
+                }
+            }
+            else
+            {
+                m_agent.SetDestination(human.transform.position);
+                if (m_agent.hasPath)
+                {
+                    if (!useMaxDistance || (m_agent.remainingDistance <= _maxDistance))
+                    {
+                        if (m_agent.remainingDistance < shortestDistance)
+                        {
+                            closest = human.transform;
+                            shortestDistance = m_agent.remainingDistance;
+                        }
+                    }
+                }
+            }
+        }
+        return closest;
     }
 }

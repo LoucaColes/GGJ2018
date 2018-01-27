@@ -63,7 +63,7 @@ public class ZombieManager : MonoBehaviour
 
     public void SpawnZombiesRandom(int _zombiesToSpawn)
     {
-        for(int zombieIter = 0; zombieIter < _zombiesToSpawn; zombieIter++)
+        for(int zombieIter = 0; zombieIter < _zombiesToSpawn + 1; zombieIter++)
         {
             GameObject zombie = Instantiate(m_zombiePrefab, GetRandomPosition(), Quaternion.identity);
             m_zombies.Add(zombie.GetComponent<Zombie>());
