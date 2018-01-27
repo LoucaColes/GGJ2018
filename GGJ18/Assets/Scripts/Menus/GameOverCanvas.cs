@@ -19,7 +19,6 @@ public class GameOverCanvas : MonoBehaviour
     private float m_timer;
 
     private Player m_player;
-    public GameType m_gameType;
 
     // Use this for initialization
     private void Start()
@@ -66,7 +65,7 @@ public class GameOverCanvas : MonoBehaviour
             switch (m_buttons[m_buttonIndex].name)
             {
                 case "ReplayButton":
-                    if (m_gameType == GameType.GameOne)
+                    if (GameManager.m_instance.m_gameType == GameType.GameOne)
                     {
                         SceneLoader.m_instance.LoadGameOne();
                     }
@@ -77,7 +76,7 @@ public class GameOverCanvas : MonoBehaviour
                     break;
 
                 case "ExitButton":
-                    if (m_gameType == GameType.GameOne)
+                    if (GameManager.m_instance.m_gameType == GameType.GameOne)
                     {
                         SceneLoader.m_instance.LoadGameOneMenu();
                     }
@@ -91,7 +90,7 @@ public class GameOverCanvas : MonoBehaviour
 
         if (m_player.GetButtonDown("Back"))
         {
-            if (m_gameType == GameType.GameOne)
+            if (GameManager.m_instance.m_gameType == GameType.GameOne)
             {
                 SceneLoader.m_instance.LoadGameOneMenu();
             }

@@ -71,6 +71,7 @@ public class PauseCanvas : MonoBehaviour
             {
                 case "PlayButton":
                     CanvasManager.m_instance.UpdateCanvases(GameState.Play);
+                    GameManager.m_instance.m_gameState = GameState.Play;
                     break;
 
                 case "SFXMuteButton":
@@ -100,7 +101,7 @@ public class PauseCanvas : MonoBehaviour
                     break;
 
                 case "ExitButton":
-                    if (m_gameType == GameType.GameOne)
+                    if (GameManager.m_instance.m_gameType == GameType.GameOne)
                     {
                         SceneLoader.m_instance.LoadGameOneMenu();
                     }
@@ -115,6 +116,7 @@ public class PauseCanvas : MonoBehaviour
         if (m_player.GetButtonDown("Back"))
         {
             CanvasManager.m_instance.UpdateCanvases(GameState.Play);
+            GameManager.m_instance.m_gameState = GameState.Play;
         }
     }
 

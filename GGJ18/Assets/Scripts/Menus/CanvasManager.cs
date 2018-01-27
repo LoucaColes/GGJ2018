@@ -28,7 +28,8 @@ public class CanvasManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        UpdateCanvases(GameState.Play);
+
+        UpdateCanvases(GameManager.m_instance.m_gameState);
     }
 
     // Update is called once per frame
