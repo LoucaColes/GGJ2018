@@ -198,11 +198,10 @@ public class HumanManager : MonoBehaviour
         return ID;
     }
 
-    public Transform GetClosest(Vector3 _position, float _maxDistance = -1.0f)
+    public Transform GetClosest(Vector3 _position, float _maxDistance = -1.0f, bool _ignoreRayCast = false)
     {
         Transform closest = null;
         float shortestDistance = 0.0f;
-
 
         bool useMaxDistance = false;
         if(_maxDistance != -1.0f)
@@ -212,11 +211,20 @@ public class HumanManager : MonoBehaviour
         
         foreach(Human human in m_humans)
         {
-            RaycastHit hit;
-            Physics.Raycast(_position, (human.transform.position - _position).normalized, out hit);
-
-            if (hit.collider.gameObject.CompareTag("Human"))
+            bool hitResult = false;
+            if (!_ignoreRayCast)
             {
+                RaycastHit hit;
+                Physics.Raycast(_position, (human.transform.position - _position).normalized, out hit);
+
+                if (hit.collider.gameObject.CompareTag("Human"))
+                {
+                    hitResult = true;
+                }
+            }
+
+            if(hitResult || _ignoreRayCast)
+            { 
                 if (closest == null)
                 {
                     float distance = Vector3.Distance(_position, human.transform.position);

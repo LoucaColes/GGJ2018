@@ -22,6 +22,8 @@ public class ZombieManager : MonoBehaviour
 
     private Transform m_navTester;
     private NavMeshAgent m_agent;
+
+    private bool m_hordeMode = false;
     
     void Start ()
     {
@@ -33,6 +35,11 @@ public class ZombieManager : MonoBehaviour
 
         m_zombieHolder = new GameObject("ZombieHolder").transform;
         m_zombieHolder.SetParent(transform);
+
+        if(GameManager.m_instance.m_enableTimer)
+        {
+            m_spawningLength = GameManager.m_instance.m_gameTime;
+        }
 
         SpawnZombiesRandom((int)(m_zombieSpawnRate.Evaluate(m_elapsedSpawningTime / m_spawningLength) * m_maxZombiePopulation));
 	}
@@ -59,6 +66,21 @@ public class ZombieManager : MonoBehaviour
         {
             SpawnZombiesRandom(zombiesToSpawn);
         }
+
+        if (GameManager.m_instance.m_enableTimer)
+        {
+            if (!m_hordeMode)
+            {
+                if (GameManager.m_instance.m_gameTimer < 0.0f)
+                {
+                    m_hordeMode = true;
+                    foreach (Zombie zom in m_zombies)
+                    {
+                        zom.SetHordeMode();
+                    }
+                }
+            }
+        }
     }
 
     public void SpawnZombiesRandom(int _zombiesToSpawn)
@@ -69,6 +91,11 @@ public class ZombieManager : MonoBehaviour
             m_zombies.Add(zombie.GetComponent<Zombie>());
             zombie.transform.SetParent(m_zombieHolder);
             zombie.name = "Zombie" + m_zombies.Count;
+
+            if(m_hordeMode)
+            {
+                m_zombies[m_zombies.Count - 1].SetHordeMode();
+            }
 
             GlobalEventBoard.Instance.AddRapidEvent(Event.ZOM_ZombieSpawned);
         }
@@ -108,7 +135,7 @@ public class ZombieManager : MonoBehaviour
         int spawnIndex = _index;
         if (spawnIndex == -1)
         {
-            spawnIndex = Random.Range(0, m_spawnPoints.Count - 1);
+            spawnIndex = Random.Range(0, m_spawnPoints.Count);
         }
 
         Vector3 position = Vector3.zero;

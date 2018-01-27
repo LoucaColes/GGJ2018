@@ -211,7 +211,7 @@ Transform:
   m_GameObject: {fileID: 1774806233510264}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4867991603492520}
   - {fileID: 4219211243550734}
@@ -336,11 +336,11 @@ MonoBehaviour:
   - {fileID: 4551652454862640}
   - {fileID: 4317297253220860}
   m_state: 0
-  m_wanderPeriodLength: 3
+  m_wanderPeriodLength: 5
   m_remainingWanderTime: 0
-  m_maxDetectionDistance: 10
-  m_chaseSpeed: 3.5
-  m_wanderSpeed: 1
+  m_maxDetectionDistance: 50
+  m_chaseSpeed: 7
+  m_wanderSpeed: 3.5
 --- !u!114 &114722938786025366
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -24,7 +24,7 @@ public class PointToPointAgent : MonoBehaviour
     {
         if (m_targets.Count != 0)
         {
-            if (m_tracking && AtDestination())
+            if (m_tracking /*&& AtDestination()*/)
             {
                 RaycastHit hit;
                 Physics.Raycast(transform.position, (m_targets[m_destinationIndex].transform.position - transform.position).normalized, out hit);

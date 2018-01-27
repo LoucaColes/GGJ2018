@@ -131,4 +131,28 @@ public class Zombie : MonoBehaviour
         m_agent.SetMoveSpeed(m_wanderSpeed);
         m_remainingWanderTime = m_wanderPeriodLength;
     }
+
+    public void SetHordeMode()
+    {
+        if(m_agent == null)
+        {
+            m_agent = GetComponent<PointToPointAgent>();
+        }
+        m_agent.m_tracking = false;
+
+        Transform target = HumanManager.Instance.GetClosest(transform.position, -1.0f, true);
+        if (target)
+        {
+            m_agent.ClearTargets();
+            m_agent.AddTarget(target);
+            m_agent.SetMoveSpeed(m_chaseSpeed);
+            m_state = ZombieState.MovingToHuman;
+        }
+        else
+        {
+            m_state = ZombieState.Wandering;
+        }
+
+        m_agent.PathToCurrent();
+    }
 }

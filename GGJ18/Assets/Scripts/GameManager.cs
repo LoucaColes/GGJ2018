@@ -16,10 +16,10 @@ public class GameManager : MonoBehaviour
 
     public bool m_enableTimer;
     public float m_gameTime;
-    private float m_gameTimer;
+    public float m_gameTimer;
 
     // Use this for initialization
-    private void Start()
+    private void Awake()
     {
         if (!m_instance)
         {
@@ -27,9 +27,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
+    }
 
+    private void Start()
+    {
         m_player = ReInput.players.GetPlayer(0);
         m_gameState = GameState.Play;
         m_score = 0;
@@ -40,6 +43,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if(HumanManager.Instance.m_humans.Count == 0)
+        {
+            m_gameState = GameState.GameOver;
+            CanvasManager.m_instance.UpdateCanvases(m_gameState);
+        }
+
         if (m_player.GetButtonDown("Pause") && m_gameState == GameState.Play)
         {
             m_gameState = GameState.Pause;
@@ -48,16 +57,16 @@ public class GameManager : MonoBehaviour
 
         if (m_enableTimer)
         {
-            m_gameTimer -= Time.deltaTime;
             if (m_gameTimer > 0)
             {
+                m_gameTimer -= Time.deltaTime;
                 CanvasManager.m_instance.m_hud.GetComponent<HUDCanvas>().UpdateHudTime(Mathf.RoundToInt(m_gameTimer));
             }
-            else if (m_gameTimer <= 0)
-            {
-                m_gameState = GameState.GameOver;
-                CanvasManager.m_instance.UpdateCanvases(m_gameState);
-            }
+            //else if (m_gameTimer <= 0)
+            //{
+            //    m_gameState = GameState.GameOver;
+            //    CanvasManager.m_instance.UpdateCanvases(m_gameState);
+            //}
         }
     }
 
