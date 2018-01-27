@@ -37,13 +37,13 @@ public class GameManager : MonoBehaviour
         m_gameState = GameState.Play;
         m_score = 0;
         m_gameTimer = m_gameTime;
-        CanvasManager.m_instance.m_hud.GetComponent<HUDCanvas>().UpdateHudScore(m_score);
+        //CanvasManager.m_instance.m_hud.GetComponent<HUDCanvas>().UpdateHudScore(m_score);
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if(HumanManager.Instance.m_humans.Count == 0)
+        if (HumanManager.Instance.m_humans.Count == 0)
         {
             m_gameState = GameState.GameOver;
             CanvasManager.m_instance.UpdateCanvases(m_gameState);
