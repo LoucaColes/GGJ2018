@@ -46,9 +46,9 @@ public class MazeGen : MonoBehaviour
         }
 
         //export data
-        string t_fileName = levelName + ".asset";
+        string t_fileName = levelName + ".prefab";
         string t_filePath = exportPath + t_fileName;
-        //AssetDatabase.CreateAsset(m_parent, t_filePath);
+        PrefabUtility.CreatePrefab(t_filePath, m_parent);
     }
 
     private bool CheckColours(Color _a, Color _b)
