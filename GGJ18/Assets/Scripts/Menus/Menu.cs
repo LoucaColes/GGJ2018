@@ -7,6 +7,7 @@ using Rewired;
 public class Menu : MonoBehaviour
 {
     public Button[] m_buttons;
+    public int m_startIndex;
     private int m_buttonIndex;
 
     public Color m_enabledColour;
@@ -20,7 +21,7 @@ public class Menu : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        m_buttonIndex = 0;
+        m_buttonIndex = m_startIndex;
         m_player = ReInput.players.GetPlayer(0);
         m_timer = 0;
     }

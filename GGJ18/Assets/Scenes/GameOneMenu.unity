@@ -394,9 +394,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_buttons:
-  - {fileID: 1116590701}
-  - {fileID: 869772780}
   - {fileID: 112416157}
+  - {fileID: 869772780}
+  - {fileID: 1116590701}
+  m_startIndex: 2
   m_enabledColour: {r: 1, g: 1, b: 1, a: 1}
   m_disabledColour: {r: 0.4044118, g: 0.4044118, b: 0.4044118, a: 1}
   m_moveSpeed: 0.5
