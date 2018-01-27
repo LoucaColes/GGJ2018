@@ -2,10 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using Rewired;
 
 public class HumanManager : MonoBehaviour
 {
+    public class SelectedHuman
+    {
+        public int m_selectedHumanIndex = 0;
+        public int m_humanID = -1;
+
+        public SelectedHuman(int _selectedHumanIndex, int _humanID)
+        {
+            m_selectedHumanIndex = _selectedHumanIndex;
+            m_humanID = _humanID;
+        }
+
+        public void SetData(int _selectedHumanIndex, int _humanID)
+        {
+            m_selectedHumanIndex = _selectedHumanIndex;
+            m_humanID = _humanID;
+        }
+    }
+
     public static HumanManager Instance = null;
 
     public int m_startingHumanPopulation;
@@ -22,6 +40,11 @@ public class HumanManager : MonoBehaviour
 
     private List<int> m_humanIDs = new List<int>();
 
+    public Player m_player;
+    public SelectedHuman m_selectedHuman = new SelectedHuman(0, -1);
+
+    public int m_humansSafe = 0;
+
     void Start ()
     {
         CreateInstance();
@@ -33,7 +56,14 @@ public class HumanManager : MonoBehaviour
         m_humanHolder = new GameObject("HumanHolder").transform;
         m_humanHolder.SetParent(transform);
 
-        SpawnHumans(m_startingHumanPopulation);
+        SpawnHumans(m_startingHumanPopulation);        
+        if (m_humans.Count > 0)
+        {
+            m_selectedHuman.SetData(m_selectedHuman.m_selectedHumanIndex, m_humans[m_selectedHuman.m_selectedHumanIndex].m_ID);
+            m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = true;
+        }
+
+        m_player = ReInput.players.GetPlayer(0);
     }
 
     private void CreateInstance()
@@ -45,6 +75,52 @@ public class HumanManager : MonoBehaviour
         else
         {
             Instance = this;
+        }
+    }
+
+    void Update()
+    {
+        if (m_humans.Count > 0 || m_selectedHuman.m_selectedHumanIndex != -1)
+        {
+            if (m_player.GetButtonDown("SwitchPos"))
+            {
+                IncreaseSelectedIndex();
+            }
+            else if (m_player.GetButtonDown("SwitchNeg"))
+            {
+                DecreaseSelectedIndex();
+            }
+        }
+    }
+
+    private void IncreaseSelectedIndex()
+    {
+        m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = false;
+
+        m_selectedHuman.m_selectedHumanIndex++;
+        if(m_selectedHuman.m_selectedHumanIndex >= m_humans.Count)
+        {
+            m_selectedHuman.m_selectedHumanIndex = 0;
+        }
+        m_selectedHuman.m_humanID = m_humans[m_selectedHuman.m_selectedHumanIndex].m_ID;
+
+        m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = true;
+    }
+
+    private void DecreaseSelectedIndex()
+    {
+        if (m_humans.Count > 1)
+        {
+            m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = false;
+
+            m_selectedHuman.m_selectedHumanIndex--;
+            if (m_selectedHuman.m_selectedHumanIndex < 0)
+            {
+                m_selectedHuman.m_selectedHumanIndex = m_humans.Count - 1;
+            }
+            m_selectedHuman.m_humanID = m_humans[m_selectedHuman.m_selectedHumanIndex].m_ID;
+
+            m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = true;
         }
     }
 
@@ -86,11 +162,27 @@ public class HumanManager : MonoBehaviour
         int ID = _human.m_ID;
         m_humans.Remove(_human);
         m_humanIDs.Remove(ID);
-
-        HumanRemovedEvent data = new HumanRemovedEvent(_human.transform, _human.m_ID);
+        
         Destroy(_human.gameObject);
+        if (m_humans.Count > 0)
+        {
+            if (m_selectedHuman.m_selectedHumanIndex >= m_humans.Count)
+            {
+                m_selectedHuman.m_selectedHumanIndex = m_humans.Count - 1;
+                m_selectedHuman.m_humanID = m_humans[m_selectedHuman.m_selectedHumanIndex].m_ID;
+            }
+            else
+            {
+                DecreaseSelectedIndex();
+            }
+        }
+        else
+        {
+            m_selectedHuman.m_selectedHumanIndex = -1;
+            m_selectedHuman.m_humanID = -1;
+        }
 
-        GlobalEventBoard.Instance.AddRapidEvent(Event.ZOM_HumanRemoved, data);
+        GlobalEventBoard.Instance.AddRapidEvent(Event.ZOM_HumanRemoved);
     }
 
     private int GenerateID()
@@ -111,44 +203,49 @@ public class HumanManager : MonoBehaviour
         Transform closest = null;
         float shortestDistance = 0.0f;
 
+
         bool useMaxDistance = false;
         if(_maxDistance != -1.0f)
         {
             useMaxDistance = true;
         }
-
-        m_navTester.position = _position;
+        
         foreach(Human human in m_humans)
         {
-            if(!closest)
-            {
-                closest = human.transform;
+            RaycastHit hit;
+            Physics.Raycast(_position, (human.transform.position - _position).normalized, out hit);
 
-                m_agent.SetDestination(closest.position);
-                if (m_agent.hasPath)
+            if (hit.collider.gameObject.CompareTag("Human"))
+            {
+                if (closest == null)
                 {
-                    if (!useMaxDistance || (m_agent.remainingDistance <= _maxDistance))
+                    float distance = Vector3.Distance(_position, human.transform.position);
+                    if (!useMaxDistance || (distance <= _maxDistance))
                     {
-                        shortestDistance = m_agent.remainingDistance;
+                        closest = human.transform;
+                        shortestDistance = distance;
                     }
                 }
-            }
-            else
-            {
-                m_agent.SetDestination(human.transform.position);
-                if (m_agent.hasPath)
+                else
                 {
-                    if (!useMaxDistance || (m_agent.remainingDistance <= _maxDistance))
+                    float distance = Vector3.Distance(_position, human.transform.position);
+                    if (!useMaxDistance || (distance <= _maxDistance))
                     {
-                        if (m_agent.remainingDistance < shortestDistance)
+                        if (distance < shortestDistance)
                         {
                             closest = human.transform;
-                            shortestDistance = m_agent.remainingDistance;
+                            shortestDistance = distance;
                         }
                     }
                 }
             }
         }
         return closest;
+    }
+
+    public void HumanSafe(Human _human)
+    {
+        RemoveHuman(_human);
+        m_humansSafe++;
     }
 }

@@ -18,12 +18,18 @@ public class Zombie : MonoBehaviour
 
     public ZombieState m_state = ZombieState.Wandering;
 
-    public float m_wanderPeriodLength = 100f;
-    private float m_remainingWanderTime = 0.0f;
+    public float m_wanderPeriodLength = 1.0f;
+    public float m_remainingWanderTime = 0.0f;
+
+    public float m_maxDetectionDistance = 10.0f;
+
+    public float m_chaseSpeed = 3.5f;
+    public float m_wanderSpeed = 1.0f;
 
     void Start ()
     {
         m_agent = GetComponent<PointToPointAgent>();
+        m_agent.m_tracking = true;
 
         GlobalEventBoard.Instance.SubscribeToEvent(Event.ZOM_HumanSpawned, Ev_HumanSpawned);
         GlobalEventBoard.Instance.SubscribeToEvent(Event.ZOM_HumanRemoved, Ev_HumanRemoved);
@@ -48,10 +54,12 @@ public class Zombie : MonoBehaviour
         else if(m_state == ZombieState.Wandering)
         {
             m_remainingWanderTime -= Time.deltaTime;
+            m_state = ZombieState.CheckingForHuman;
+            GetNextHuman();
 
             if (m_remainingWanderTime <= 0.0f)
             {
-                m_state = ZombieState.CheckingForHuman;
+                DoWondering();
             }
         }
     }
@@ -68,13 +76,8 @@ public class Zombie : MonoBehaviour
 
     public void Ev_HumanRemoved(object _data = null)
     {
-        if (_data != null)
-        {
-            HumanRemovedEvent data = (HumanRemovedEvent)_data;
-
-            m_agent.ClearTargets();
-            m_state = ZombieState.CheckingForHuman;
-        }
+        m_agent.ClearTargets();
+        m_state = ZombieState.CheckingForHuman;
     }
 
     void OnCollisionEnter(Collision _other)
@@ -90,15 +93,16 @@ public class Zombie : MonoBehaviour
 
     private void GetNextHuman()
     {
-        Transform target = HumanManager.Instance.GetClosest(transform.position);
+        Transform target = HumanManager.Instance.GetClosest(transform.position, m_maxDetectionDistance);
         if (target)
         {
+            m_agent.ClearTargets();
             m_agent.AddTarget(target);
+            m_agent.SetMoveSpeed(m_chaseSpeed);
             m_state = ZombieState.MovingToHuman;
         }
         else
         {
-            DoWondering();
             m_state = ZombieState.Wandering;
         }
 
@@ -124,6 +128,7 @@ public class Zombie : MonoBehaviour
             position = WorldManager.Instance.m_safeTargets[Random.Range(0, WorldManager.Instance.m_safeTargets.Count - 1)].position;
         }
 
+        m_agent.SetMoveSpeed(m_wanderSpeed);
         m_remainingWanderTime = m_wanderPeriodLength;
     }
 }

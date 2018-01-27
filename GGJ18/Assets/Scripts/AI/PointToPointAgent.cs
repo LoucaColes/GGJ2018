@@ -12,12 +12,34 @@ public class PointToPointAgent : MonoBehaviour
     public int m_destinationIndex = 0;
 
     public bool m_looping = true;
+    public bool m_tracking = false;
     
 	void Awake ()
     {
         m_agent = GetComponent<NavMeshAgent>();
         m_agent.isStopped = false;
-        //m_agent.SetDestination(m_targets[m_destinationIndex].position);
+    }
+
+    void Update()
+    {
+        if (m_targets.Count != 0)
+        {
+            if (m_tracking && AtDestination())
+            {
+                RaycastHit hit;
+                Physics.Raycast(transform.position, (m_targets[m_destinationIndex].transform.position - transform.position).normalized, out hit);
+
+                if (hit.collider.gameObject.CompareTag((m_targets[m_destinationIndex].gameObject.tag)))
+                {
+                    m_agent.SetDestination(m_targets[m_destinationIndex].position);
+                }
+            }
+
+            while (m_targets.Contains(null))
+            {
+                m_targets.Remove(null);
+            }
+        }
     }
 
     public bool AtDestination()
@@ -113,5 +135,25 @@ public class PointToPointAgent : MonoBehaviour
     public float DistanceToDestination()
     {
         return m_agent.remainingDistance;
+    }
+
+    public static float GetPathLength(NavMeshPath path)
+    {
+        float lng = 0.0f;
+
+        if ((path.status != NavMeshPathStatus.PathInvalid) && (path.corners.Length > 1))
+        {
+            for (int i = 1; i < path.corners.Length; ++i)
+            {
+                lng += Vector3.Distance(path.corners[i - 1], path.corners[i]);
+            }
+        }
+        
+        return lng;
+    }
+
+    public void SetMoveSpeed(float _speed)
+    {
+        m_agent.speed = _speed;
     }
 }

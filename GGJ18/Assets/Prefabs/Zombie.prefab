@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 195863761174162078}
   - component: {fileID: 114428210651423272}
   - component: {fileID: 114722938786025366}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,9 +335,12 @@ MonoBehaviour:
   - {fileID: 4320808391679518}
   - {fileID: 4551652454862640}
   - {fileID: 4317297253220860}
-  m_maxWonderLength: 10
-  m_state: 2
-  m_wanderPeriodLength: 10
+  m_state: 0
+  m_wanderPeriodLength: 3
+  m_remainingWanderTime: 0
+  m_maxDetectionDistance: 10
+  m_chaseSpeed: 3.5
+  m_wanderSpeed: 1
 --- !u!114 &114722938786025366
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -353,6 +356,7 @@ MonoBehaviour:
   m_changeDistanceLimit: 0.1
   m_destinationIndex: 0
   m_looping: 1
+  m_tracking: 0
 --- !u!195 &195863761174162078
 NavMeshAgent:
   m_ObjectHideFlags: 1
