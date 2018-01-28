@@ -65,10 +65,14 @@ public class GameManager : MonoBehaviour
 
         if (m_gameState == GameState.Play)
         {
+            CanvasManager.m_instance.m_hud.GetComponent<HUDCanvas>().UpdateHudScore(m_score);
             m_sfxTimer += Time.deltaTime;
             if (m_sfxTimer > m_sfxTime)
             {
-                AudioManager.AudioManager.m_instance.PlaySFX(Random.Range(0, 4));
+                int t = Random.Range(0, 12);
+                float pan = Random.Range(-1, 1);
+                AudioManager.AudioManager.m_instance.UpdateSoundVariables(AudioManager.AudioData.AudioType.SFX, t, 1, 1, false, pan, 0, 0, 0);
+                AudioManager.AudioManager.m_instance.PlaySFX(t);
                 m_sfxTime = Random.Range(m_sfxTimeMin, m_sfxTimeMax);
                 m_sfxTimer = 0;
             }
