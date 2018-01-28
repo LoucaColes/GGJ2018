@@ -6725,48 +6725,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d14dafe17e9b1a54f901be269d1c2436, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &392657282
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4942627235446232, guid: 5abff450e25a0b740ae1c590b619f6fd, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 11.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 4942627235446232, guid: 5abff450e25a0b740ae1c590b619f6fd, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 8.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 4942627235446232, guid: 5abff450e25a0b740ae1c590b619f6fd, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 95.34589
-      objectReference: {fileID: 0}
-    - target: {fileID: 4942627235446232, guid: 5abff450e25a0b740ae1c590b619f6fd, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4942627235446232, guid: 5abff450e25a0b740ae1c590b619f6fd, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4942627235446232, guid: 5abff450e25a0b740ae1c590b619f6fd, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4942627235446232, guid: 5abff450e25a0b740ae1c590b619f6fd, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4942627235446232, guid: 5abff450e25a0b740ae1c590b619f6fd, type: 2}
-      propertyPath: m_RootOrder
-      value: 15
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 5abff450e25a0b740ae1c590b619f6fd, type: 2}
-  m_IsPrefabParent: 0
 --- !u!4 &415495419 stripped
 Transform:
   m_PrefabParentObject: {fileID: 439364, guid: b520507262fc19a4a8decc473e5321e9, type: 2}

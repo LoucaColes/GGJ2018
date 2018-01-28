@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EndZone : MonoBehaviour
 {
-    void OnTriggerEnter(Collider _other)
+    private void OnTriggerEnter(Collider _other)
     {
-        if(_other.gameObject.CompareTag("Human"))
+        if (_other.gameObject.CompareTag("Human"))
         {
             HumanManager.Instance.HumanSafe(_other.gameObject.GetComponent<Human>());
+            GameManager.m_instance.IncreaseScore(1);
         }
     }
 }
