@@ -90,6 +90,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if(m_score == 5)
+        {
+            m_gameState = GameState.GameOver;
+        }
+
         if (m_gameState == GameState.GameOver)
         {
             CanvasManager.m_instance.m_gameOverCanvas.GetComponent<GameOverCanvas>().UpdateScoreText(m_score);
