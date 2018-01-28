@@ -15,6 +15,8 @@ public class Human : MonoBehaviour
     private Transform m_point;
     public Vector3 m_boxHalf;
 
+    private GameObject m_cube;
+
     public bool m_safe = true;
 
     public Human Initialise(int _ID)
@@ -24,6 +26,8 @@ public class Human : MonoBehaviour
         m_player = ReInput.players.GetPlayer(0);
         m_rb = GetComponent<Rigidbody>();
         m_point = transform.GetChild(0);
+        m_cube = transform.GetChild(1).gameObject;
+        m_cube.SetActive(false);
 
         return this;
     }
@@ -32,6 +36,10 @@ public class Human : MonoBehaviour
     {
         if (m_inputActive)
         {
+            if (!m_cube.activeSelf)
+            {
+                m_cube.SetActive(true);
+            }
             m_rb.AddForce((-Vector3.left * (m_player.GetAxis("MoveHor") * m_moveCoefficents.x)) + (Vector3.forward * (m_player.GetAxis("MoveVert") * m_moveCoefficents.y)));
             if (m_player.GetButtonDown("Stun"))
             {
@@ -43,6 +51,13 @@ public class Human : MonoBehaviour
                         collider.gameObject.GetComponent<Zombie>().Stun();
                     }
                 }
+            }
+        }
+        else
+        {
+            if (m_cube.activeSelf)
+            {
+                m_cube.SetActive(false);
             }
         }
     }
