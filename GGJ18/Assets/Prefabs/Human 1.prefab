@@ -192,7 +192,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 5
   m_Drag: 1
-  m_AngularDrag: 0.2
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -234,9 +234,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ID: -1
-  m_moveCoefficents: {x: 120, y: 120}
+  m_moveCoefficents: {x: 200, y: 200}
   m_inputActive: 0
   m_boxHalf: {x: 5, y: 5, z: 5}
-  m_blood: {fileID: 0}
-  m_delayTime: 0
   m_safe: 1
+  m_stunPsPref: {fileID: 1954511171097802, guid: 87883465235acd04ca4e683b068a744f,
+    type: 2}
+  m_rotationCoefficient: 100
+  m_rotationMinimum: 10
+  m_force: {x: 0, y: 0, z: 0}
+  m_rotationAngle: 0
+  m_rotationSign: 0
+  m_stunObject: {fileID: 0}
+  m_fireTimerLength: 2
+  m_rechargeTimerLength: 5
+  m_remainingFireTime: 0
+  m_remainingRechargeTime: 0
+  m_recharging: 0

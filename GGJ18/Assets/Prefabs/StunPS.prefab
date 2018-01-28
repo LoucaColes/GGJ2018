@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4802541239987656}
   - component: {fileID: 198072527719254162}
   - component: {fileID: 199032343526502888}
+  - component: {fileID: 114503254784514810}
   m_Layer: 0
   m_Name: StunPS
   m_TagString: Untagged
@@ -41,6 +42,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114503254784514810
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1954511171097802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc17c15337750b4cad6183997ab2c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_killTime: 2
 --- !u!198 &198072527719254162
 ParticleSystem:
   m_ObjectHideFlags: 1

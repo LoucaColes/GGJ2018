@@ -342,6 +342,9 @@ MonoBehaviour:
   m_chaseSpeed: 7
   m_wanderSpeed: 3.5
   m_stunTime: 5
+  m_bloodPsPref: {fileID: 1955517146231474, guid: e0ddba15c524bdf45bf132a41e513823,
+    type: 2}
+  m_eatingTime: 0
 --- !u!114 &114722938786025366
 MonoBehaviour:
   m_ObjectHideFlags: 1
