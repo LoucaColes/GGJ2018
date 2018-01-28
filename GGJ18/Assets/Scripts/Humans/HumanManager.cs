@@ -6,23 +6,23 @@ using Rewired;
 
 public class HumanManager : MonoBehaviour
 {
-    public class SelectedHuman
-    {
-        public int m_selectedHumanIndex = 0;
-        public int m_humanID = -1;
+    //public class SelectedHuman
+    //{
+    //    public int m_selectedHumanIndex = 0;
+    //    public int m_humanID = -1;
 
-        public SelectedHuman(int _selectedHumanIndex, int _humanID)
-        {
-            m_selectedHumanIndex = _selectedHumanIndex;
-            m_humanID = _humanID;
-        }
+    //    public SelectedHuman(int _selectedHumanIndex, int _humanID)
+    //    {
+    //        m_selectedHumanIndex = _selectedHumanIndex;
+    //        m_humanID = _humanID;
+    //    }
 
-        public void SetData(int _selectedHumanIndex, int _humanID)
-        {
-            m_selectedHumanIndex = _selectedHumanIndex;
-            m_humanID = _humanID;
-        }
-    }
+    //    public void SetData(int _selectedHumanIndex, int _humanID)
+    //    {
+    //        m_selectedHumanIndex = _selectedHumanIndex;
+    //        m_humanID = _humanID;
+    //    }
+    //}
 
     public static HumanManager Instance = null;
 
@@ -41,7 +41,7 @@ public class HumanManager : MonoBehaviour
     private List<int> m_humanIDs = new List<int>();
 
     public Player m_player;
-    public SelectedHuman m_selectedHuman = new SelectedHuman(0, -1);
+    public int m_selectedHuman = 0;
 
     public int m_humansSafe = 0;
 
@@ -59,8 +59,7 @@ public class HumanManager : MonoBehaviour
         SpawnHumans(m_startingHumanPopulation);        
         if (m_humans.Count > 0)
         {
-            m_selectedHuman.SetData(m_selectedHuman.m_selectedHumanIndex, m_humans[m_selectedHuman.m_selectedHumanIndex].m_ID);
-            m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = true;
+            m_humans[m_selectedHuman].m_inputActive = true;
         }
 
         m_player = ReInput.players.GetPlayer(0);
@@ -80,7 +79,7 @@ public class HumanManager : MonoBehaviour
 
     void Update()
     {
-        if (m_humans.Count > 0 || m_selectedHuman.m_selectedHumanIndex != -1)
+        if (m_humans.Count > 0 || m_selectedHuman != -1)
         {
             if (m_player.GetButtonDown("SwitchPos"))
             {
@@ -95,32 +94,30 @@ public class HumanManager : MonoBehaviour
 
     private void IncreaseSelectedIndex()
     {
-        m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = false;
+        m_humans[m_selectedHuman].m_inputActive = false;
 
-        m_selectedHuman.m_selectedHumanIndex++;
-        if(m_selectedHuman.m_selectedHumanIndex >= m_humans.Count)
+        m_selectedHuman++;
+        if(m_selectedHuman >= m_humans.Count)
         {
-            m_selectedHuman.m_selectedHumanIndex = 0;
+            m_selectedHuman = 0;
         }
-        m_selectedHuman.m_humanID = m_humans[m_selectedHuman.m_selectedHumanIndex].m_ID;
 
-        m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = true;
+        m_humans[m_selectedHuman].m_inputActive = true;
     }
 
     private void DecreaseSelectedIndex()
     {
         if (m_humans.Count > 1)
         {
-            m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = false;
+            m_humans[m_selectedHuman].m_inputActive = false;
 
-            m_selectedHuman.m_selectedHumanIndex--;
-            if (m_selectedHuman.m_selectedHumanIndex < 0)
+            m_selectedHuman--;
+            if (m_selectedHuman < 0)
             {
-                m_selectedHuman.m_selectedHumanIndex = m_humans.Count - 1;
+                m_selectedHuman = m_humans.Count - 1;
             }
-            m_selectedHuman.m_humanID = m_humans[m_selectedHuman.m_selectedHumanIndex].m_ID;
 
-            m_humans[m_selectedHuman.m_selectedHumanIndex].m_inputActive = true;
+            m_humans[m_selectedHuman].m_inputActive = true;
         }
     }
 
@@ -166,10 +163,10 @@ public class HumanManager : MonoBehaviour
         Destroy(_human.gameObject);
         if (m_humans.Count > 0)
         {
-            if (m_selectedHuman.m_selectedHumanIndex >= m_humans.Count)
+            if (m_selectedHuman >= m_humans.Count)
             {
-                m_selectedHuman.m_selectedHumanIndex = m_humans.Count - 1;
-                m_selectedHuman.m_humanID = m_humans[m_selectedHuman.m_selectedHumanIndex].m_ID;
+                m_selectedHuman = 0;
+                m_humans[m_selectedHuman].m_inputActive = true;
             }
             else
             {
@@ -178,8 +175,7 @@ public class HumanManager : MonoBehaviour
         }
         else
         {
-            m_selectedHuman.m_selectedHumanIndex = -1;
-            m_selectedHuman.m_humanID = -1;
+            m_selectedHuman = -1;
         }
 
         GlobalEventBoard.Instance.AddRapidEvent(Event.ZOM_HumanRemoved);
