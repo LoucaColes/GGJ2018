@@ -24,20 +24,26 @@ public class PointToPointAgent : MonoBehaviour
     {
         if (m_targets.Count != 0)
         {
+            while (m_targets.Contains(null))
+            {
+                m_targets.Remove(null);
+            }
+        }
+
+        if (m_targets.Count != 0)
+        {
             if (m_tracking /*&& AtDestination()*/)
             {
                 RaycastHit hit;
                 Physics.Raycast(transform.position, (m_targets[m_destinationIndex].transform.position - transform.position).normalized, out hit);
 
-                if (hit.collider.gameObject.CompareTag((m_targets[m_destinationIndex].gameObject.tag)))
+                if (hit.collider != null)
                 {
-                    m_agent.SetDestination(m_targets[m_destinationIndex].position);
+                    if (hit.collider.gameObject.CompareTag((m_targets[m_destinationIndex].gameObject.tag)))
+                    {
+                        m_agent.SetDestination(m_targets[m_destinationIndex].position);
+                    }
                 }
-            }
-
-            while (m_targets.Contains(null))
-            {
-                m_targets.Remove(null);
             }
         }
     }
