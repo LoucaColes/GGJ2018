@@ -66,6 +66,18 @@ public class GameManager : MonoBehaviour
         if (m_gameState == GameState.Play)
         {
             CanvasManager.m_instance.m_hud.GetComponent<HUDCanvas>().UpdateHudScore(m_score);
+
+            if (m_enableTimer)
+            {
+                print("Timer enabled");
+                if (m_gameTimer > 0)
+                {
+                    print("Timer decreasing");
+                    m_gameTimer -= Time.deltaTime;
+                    CanvasManager.m_instance.m_hud.GetComponent<HUDCanvas>().UpdateHudTime(Mathf.RoundToInt(m_gameTimer));
+                }
+            }
+
             m_sfxTimer += Time.deltaTime;
             if (m_sfxTimer > m_sfxTime)
             {
@@ -78,18 +90,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (m_enableTimer)
+        if (m_gameState == GameState.GameOver)
         {
-            if (m_gameTimer > 0)
-            {
-                m_gameTimer -= Time.deltaTime;
-                CanvasManager.m_instance.m_hud.GetComponent<HUDCanvas>().UpdateHudTime(Mathf.RoundToInt(m_gameTimer));
-            }
-            //else if (m_gameTimer <= 0)
-            //{
-            //    m_gameState = GameState.GameOver;
-            //    CanvasManager.m_instance.UpdateCanvases(m_gameState);
-            //}
+            CanvasManager.m_instance.m_gameOverCanvas.GetComponent<GameOverCanvas>().UpdateScoreText(m_score);
         }
     }
 
