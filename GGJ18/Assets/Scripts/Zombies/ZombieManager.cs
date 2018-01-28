@@ -23,6 +23,10 @@ public class ZombieManager : MonoBehaviour
     private Transform m_navTester;
     private NavMeshAgent m_agent;
 
+    public GameObject m_mudPrefab;
+
+    private IEnumerator m_delay;
+
     private bool m_hordeMode = false;
     
     void Start ()
@@ -36,9 +40,12 @@ public class ZombieManager : MonoBehaviour
         m_zombieHolder = new GameObject("ZombieHolder").transform;
         m_zombieHolder.SetParent(transform);
 
-        if(GameManager.m_instance.m_enableTimer)
+        if (GameManager.m_instance != null)
         {
-            m_spawningLength = GameManager.m_instance.m_gameTime;
+            if (GameManager.m_instance.m_enableTimer)
+            {
+                m_spawningLength = GameManager.m_instance.m_gameTime;
+            }
         }
 
         SpawnZombiesRandom((int)(m_zombieSpawnRate.Evaluate(m_elapsedSpawningTime / m_spawningLength) * m_maxZombiePopulation));
@@ -67,16 +74,19 @@ public class ZombieManager : MonoBehaviour
             SpawnZombiesRandom(zombiesToSpawn);
         }
 
-        if (GameManager.m_instance.m_enableTimer)
+        if (GameManager.m_instance != null)
         {
-            if (!m_hordeMode)
+            if (GameManager.m_instance.m_enableTimer)
             {
-                if (GameManager.m_instance.m_gameTimer < 0.0f)
+                if (!m_hordeMode)
                 {
-                    m_hordeMode = true;
-                    foreach (Zombie zom in m_zombies)
+                    if (GameManager.m_instance.m_gameTimer < 0.0f)
                     {
-                        zom.SetHordeMode();
+                        m_hordeMode = true;
+                        foreach (Zombie zom in m_zombies)
+                        {
+                            zom.SetHordeMode();
+                        }
                     }
                 }
             }
@@ -87,12 +97,14 @@ public class ZombieManager : MonoBehaviour
     {
         for(int zombieIter = 0; zombieIter < _zombiesToSpawn + 1; zombieIter++)
         {
-            GameObject zombie = Instantiate(m_zombiePrefab, GetRandomPosition(), Quaternion.identity);
+            Vector3 pos = GetRandomPosition();
+            Instantiate(m_mudPrefab, pos - new Vector3(0.0f, 1.0f, 0.0f), Quaternion.Euler(new Vector3(0, 0, 0)));
+            GameObject zombie = Instantiate(m_zombiePrefab, pos, Quaternion.identity);
             m_zombies.Add(zombie.GetComponent<Zombie>());
             zombie.transform.SetParent(m_zombieHolder);
             zombie.name = "Zombie" + m_zombies.Count;
 
-            if(m_hordeMode)
+            if (m_hordeMode)
             {
                 m_zombies[m_zombies.Count - 1].SetHordeMode();
             }
@@ -103,7 +115,9 @@ public class ZombieManager : MonoBehaviour
 
     public void SpawnZombieAtPosition(Vector3 _position)
     {
-        GameObject zombie = Instantiate(m_zombiePrefab, _position, Quaternion.identity);
+        Vector3 pos = GetRandomPosition();
+        Instantiate(m_mudPrefab, pos - new Vector3(0.0f, 1.0f, 0.0f), Quaternion.Euler(new Vector3(0, 0, 0)));
+        GameObject zombie = Instantiate(m_zombiePrefab, pos, Quaternion.identity);
         m_zombies.Add(zombie.GetComponent<Zombie>());
         zombie.transform.SetParent(m_zombieHolder);
         zombie.name = "Zombie" + m_zombies.Count;
@@ -122,6 +136,7 @@ public class ZombieManager : MonoBehaviour
         {
             zombie.transform.position = m_spawnPoints[_index].position;
         }
+        Instantiate(m_mudPrefab, zombie.transform.position - new Vector3(0.0f, 1.0f, 0.0f), Quaternion.Euler(new Vector3(0, 0, 0)));
 
         m_zombies.Add(zombie.GetComponent<Zombie>());
         zombie.transform.SetParent(m_zombieHolder);
@@ -152,5 +167,13 @@ public class ZombieManager : MonoBehaviour
     private Vector3 GetRandomOffset()
     {
         return new Vector3(Random.Range(m_spawnOffsetX.x, m_spawnOffsetX.y), 0.0f, Random.Range(m_spawnOffsetZ.x, m_spawnOffsetZ.y));
+    }
+
+    public void RemoveZombie(Zombie _zombie)
+    {
+        m_zombies.Remove(_zombie);
+        Destroy(_zombie.gameObject);
+
+        SpawnZombiesRandom(1);
     }
 }

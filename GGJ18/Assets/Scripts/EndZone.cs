@@ -11,5 +11,10 @@ public class EndZone : MonoBehaviour
             HumanManager.Instance.HumanSafe(_other.gameObject.GetComponent<Human>());
             GameManager.m_instance.IncreaseScore(1);
         }
+
+        if(_other.gameObject.CompareTag("Zombie"))
+        {
+            ZombieManager.Instance.RemoveZombie(_other.gameObject.GetComponent<Zombie>());
+        }
     }
 }

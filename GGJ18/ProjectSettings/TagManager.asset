@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Human
   - SafeZone
+  - Zombie
   layers:
   - Default
   - TransparentFX

@@ -17,4 +17,12 @@ public class SafeZone : MonoBehaviour
             }
         }
 	}
+
+    private void OnTriggerEnter(Collider _other)
+    {
+        if (_other.gameObject.CompareTag("Zombie"))
+        {
+            ZombieManager.Instance.RemoveZombie(_other.gameObject.GetComponent<Zombie>());
+        }
+    }
 }
