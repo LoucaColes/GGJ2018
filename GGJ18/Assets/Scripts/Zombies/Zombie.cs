@@ -9,7 +9,8 @@ public class Zombie : MonoBehaviour
     {
         CheckingForHuman,
         MovingToHuman,
-        Wandering
+        Wandering,
+        Stunned
     }
 
     public PointToPointAgent m_agent;
@@ -26,10 +27,14 @@ public class Zombie : MonoBehaviour
     public float m_chaseSpeed = 3.5f;
     public float m_wanderSpeed = 1.0f;
 
-    void Start ()
+    public float m_stunTime;
+    private float m_stunTimer;
+
+    private void Start()
     {
         m_agent = GetComponent<PointToPointAgent>();
         m_agent.m_tracking = true;
+        m_stunTimer = 0;
 
         GlobalEventBoard.Instance.SubscribeToEvent(Event.ZOM_HumanSpawned, Ev_HumanSpawned);
         GlobalEventBoard.Instance.SubscribeToEvent(Event.ZOM_HumanRemoved, Ev_HumanRemoved);
@@ -41,17 +46,17 @@ public class Zombie : MonoBehaviour
         GlobalEventBoard.Instance.UnsubscribeToEvent(Event.ZOM_HumanRemoved, Ev_HumanRemoved);
     }
 
-    void Update ()
+    private void Update()
     {
-        if(m_state == ZombieState.CheckingForHuman)
+        if (m_state == ZombieState.CheckingForHuman)
         {
             GetNextHuman();
         }
-        else if((m_state == ZombieState.MovingToHuman) && m_agent.AtDestination())
+        else if ((m_state == ZombieState.MovingToHuman) && m_agent.AtDestination())
         {
             m_state = ZombieState.CheckingForHuman;
         }
-        else if(m_state == ZombieState.Wandering)
+        else if (m_state == ZombieState.Wandering)
         {
             m_remainingWanderTime -= Time.deltaTime;
             m_state = ZombieState.CheckingForHuman;
@@ -62,11 +67,20 @@ public class Zombie : MonoBehaviour
                 DoWondering();
             }
         }
+        else if (m_state == ZombieState.Stunned)
+        {
+            m_stunTimer += Time.deltaTime;
+            if (m_stunTimer > m_stunTime)
+            {
+                m_state = ZombieState.CheckingForHuman;
+                m_stunTimer = 0;
+            }
+        }
     }
 
     public void Ev_HumanSpawned(object _data = null)
     {
-        if(_data != null)
+        if (_data != null)
         {
             HumanSpawnedEvent data = (HumanSpawnedEvent)_data;
 
@@ -80,15 +94,20 @@ public class Zombie : MonoBehaviour
         m_state = ZombieState.CheckingForHuman;
     }
 
-    void OnCollisionEnter(Collision _other)
+    private void OnCollisionEnter(Collision _other)
     {
-        if(_other.gameObject.CompareTag("Human"))
+        if (_other.gameObject.CompareTag("Human"))
         {
             ZombieManager.Instance.SpawnZombieAtPosition(_other.transform.position);
 
             Human human = _other.gameObject.GetComponent<Human>();
             HumanManager.Instance.RemoveHuman(human);
         }
+    }
+
+    public void Stun()
+    {
+        m_state = ZombieState.Stunned;
     }
 
     private void GetNextHuman()
@@ -123,7 +142,7 @@ public class Zombie : MonoBehaviour
             }
         }
 
-        if(position == transform.position)
+        if (position == transform.position)
         {
             position = WorldManager.Instance.m_safeTargets[Random.Range(0, WorldManager.Instance.m_safeTargets.Count - 1)].position;
         }
@@ -134,7 +153,7 @@ public class Zombie : MonoBehaviour
 
     public void SetHordeMode()
     {
-        if(m_agent == null)
+        if (m_agent == null)
         {
             m_agent = GetComponent<PointToPointAgent>();
         }

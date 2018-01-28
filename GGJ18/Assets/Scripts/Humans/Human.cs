@@ -12,6 +12,8 @@ public class Human : MonoBehaviour
 
     private Player m_player;
     private Rigidbody m_rb;
+    private Transform m_point;
+    public Vector3 m_boxHalf;
 
     public bool m_safe = true;
 
@@ -21,27 +23,39 @@ public class Human : MonoBehaviour
 
         m_player = ReInput.players.GetPlayer(0);
         m_rb = GetComponent<Rigidbody>();
+        m_point = transform.GetChild(0);
 
         return this;
     }
-	
-	void Update ()
+
+    private void Update()
     {
         if (m_inputActive)
         {
             m_rb.AddForce((-Vector3.left * (m_player.GetAxis("MoveHor") * m_moveCoefficents.x)) + (Vector3.forward * (m_player.GetAxis("MoveVert") * m_moveCoefficents.y)));
+            if (m_player.GetButtonDown("Stun"))
+            {
+                Collider[] t_collider = Physics.OverlapBox(m_point.position, m_boxHalf, Quaternion.identity);
+                foreach (Collider collider in t_collider)
+                {
+                    if (collider.gameObject.layer == 8)
+                    {
+                        collider.gameObject.GetComponent<Zombie>().Stun();
+                    }
+                }
+            }
         }
     }
 
-    void OnTriggerEnter(Collider _other)
+    private void OnTriggerEnter(Collider _other)
     {
-        if(_other.gameObject.CompareTag("SafeZone"))
+        if (_other.gameObject.CompareTag("SafeZone"))
         {
             m_safe = true;
         }
     }
 
-    void OnTriggerExit(Collider _other)
+    private void OnTriggerExit(Collider _other)
     {
         if (_other.gameObject.CompareTag("SafeZone"))
         {
