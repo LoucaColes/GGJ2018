@@ -30,6 +30,9 @@ public class Zombie : MonoBehaviour
     public float m_stunTime;
     private float m_stunTimer;
 
+    public GameObject m_bloodPsPref;
+    public float m_eatingTime;
+
     private void Start()
     {
         m_agent = GetComponent<PointToPointAgent>();
@@ -96,12 +99,12 @@ public class Zombie : MonoBehaviour
 
     private void OnCollisionEnter(Collision _other)
     {
-        if (_other.gameObject.CompareTag("Human"))
+        if (_other.gameObject.CompareTag("Human") && m_state != ZombieState.Stunned)
         {
             ZombieManager.Instance.SpawnZombieAtPosition(_other.transform.position);
-
             Human human = _other.gameObject.GetComponent<Human>();
             HumanManager.Instance.RemoveHuman(human);
+            Instantiate(m_bloodPsPref, _other.transform.position, Quaternion.Euler(new Vector3(-90, 0, 0)));
         }
     }
 

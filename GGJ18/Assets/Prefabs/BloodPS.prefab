@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4038211360380592}
   - component: {fileID: 198309469230336008}
   - component: {fileID: 199421035856474842}
+  - component: {fileID: 114603692947873838}
   m_Layer: 0
   m_Name: BloodPS
   m_TagString: Untagged
@@ -36,11 +37,23 @@ Transform:
   m_GameObject: {fileID: 1955517146231474}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114603692947873838
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1955517146231474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc17c15337750b4cad6183997ab2c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_killTime: 4
 --- !u!198 &198309469230336008
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -105,7 +118,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2.29
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -500,7 +513,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.4
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
