@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ID: -1
-  m_moveCoefficents: {x: 100, y: 100}
+  m_moveCoefficents: {x: 120, y: 120}
   m_inputActive: 0
   m_boxHalf: {x: 5, y: 5, z: 5}
   m_blood: {fileID: 0}

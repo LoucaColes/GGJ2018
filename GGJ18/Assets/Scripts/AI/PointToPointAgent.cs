@@ -182,4 +182,9 @@ public class PointToPointAgent : MonoBehaviour
     {
         return GetDirection() * GetSpeed();
     }
+
+    public void ToggleStopMove(bool _toggle)
+    {
+        m_agent.isStopped = _toggle;
+    }
 }

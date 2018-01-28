@@ -41,6 +41,7 @@ public class Human : MonoBehaviour
                 m_cube.SetActive(true);
             }
             m_rb.AddForce((-Vector3.left * (m_player.GetAxis("MoveHor") * m_moveCoefficents.x)) + (Vector3.forward * (m_player.GetAxis("MoveVert") * m_moveCoefficents.y)));
+
             if (m_player.GetButtonDown("Stun"))
             {
                 Collider[] t_collider = Physics.OverlapBox(m_point.position, m_boxHalf, Quaternion.identity);
@@ -48,6 +49,7 @@ public class Human : MonoBehaviour
                 {
                     if (collider.gameObject.layer == 8)
                     {
+                        Debug.Log("Happening");
                         collider.gameObject.GetComponent<Zombie>().Stun();
                     }
                 }

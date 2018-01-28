@@ -77,6 +77,7 @@ public class Zombie : MonoBehaviour
             {
                 m_state = ZombieState.CheckingForHuman;
                 m_stunTimer = 0;
+                m_agent.ToggleStopMove(false);
             }
         }
     }
@@ -111,6 +112,7 @@ public class Zombie : MonoBehaviour
     public void Stun()
     {
         m_state = ZombieState.Stunned;
+        m_agent.ToggleStopMove(true);
     }
 
     private void GetNextHuman()
