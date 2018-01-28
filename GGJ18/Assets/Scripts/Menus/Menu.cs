@@ -17,6 +17,7 @@ public class Menu : MonoBehaviour
     private float m_timer;
 
     private Player m_player;
+    private bool m_played;
 
     // Use this for initialization
     private void Start()
@@ -25,12 +26,21 @@ public class Menu : MonoBehaviour
         m_player = ReInput.players.GetPlayer(0);
         m_timer = 0;
         //AudioManager.AudioManager.m_instance.StopPlaying();
-        AudioManager.AudioManager.m_instance.PlayMusic(0);
+        //AudioManager.AudioManager.m_instance.PlayMusic(0);
+        m_played = false;
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (SceneLoader.m_instance.GetCurrentScene() == "GameOneMenu")
+        {
+            if (!m_played)
+            {
+                AudioManager.AudioManager.m_instance.PlayMusic("Music");
+                m_played = true;
+            }
+        }
         InputHandling();
         UpdateUI();
     }
@@ -69,7 +79,7 @@ public class Menu : MonoBehaviour
                     break;
 
                 case "GameOnePlayButton":
-                    SceneLoader.m_instance.LoadGameOneCharacterSelect();
+                    SceneLoader.m_instance.LoadGameOne();
                     break;
 
                 case "GameOneReturnButton":

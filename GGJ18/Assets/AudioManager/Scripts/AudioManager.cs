@@ -193,7 +193,10 @@ namespace AudioManager
             {
                 // Set previous music to the current
                 // Set current to the found audio data
-                m_prevMusic = m_currentMusic;
+                if (m_prevMusic != null)
+                {
+                    m_prevMusic = m_currentMusic;
+                }
                 m_currentMusic = t_data;
                 PlayNextMusicTrack(); // Play new track
             }
@@ -256,7 +259,10 @@ namespace AudioManager
                 Debug.Log("Playing Music");
 
                 // Set previous music to current music
-                m_prevMusic = m_currentMusic;
+                if (m_prevMusic != null)
+                {
+                    m_prevMusic = m_currentMusic;
+                }
                 // Set current music to new track
                 m_currentMusic = m_backgroundMusicList[_id];
                 // Set the current music's audio data's object position
@@ -292,10 +298,13 @@ namespace AudioManager
                 // Play the new track
                 m_currentMusic.m_audioSource.Play();
                 // If there is no fade set
-                if (!m_currentMusic.m_fade && m_prevMusic != null)
+                if (m_currentMusic != m_prevMusic)
                 {
-                    // Stop the previous music track
-                    m_prevMusic.m_audioSource.Stop();
+                    if (!m_currentMusic.m_fade && (m_prevMusic != null || m_prevMusic.m_audioSource != null))
+                    {
+                        // Stop the previous music track
+                        m_prevMusic.m_audioSource.Stop();
+                    }
                 }
                 // If there is fade set
                 if (m_currentMusic.m_fade)

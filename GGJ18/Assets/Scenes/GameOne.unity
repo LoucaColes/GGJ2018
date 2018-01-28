@@ -23058,10 +23058,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1840798611}
-  - {fileID: 1070030759}
+  - {fileID: 1368999157}
   - {fileID: 1930730372}
   - {fileID: 1981620034}
-  - {fileID: 1368999157}
+  - {fileID: 1070030759}
   m_Father: {fileID: 1782757441}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -26697,10 +26697,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1591927655}
-  - {fileID: 1066948077}
   - {fileID: 560046666}
-  - {fileID: 237635901}
+  - {fileID: 1066948077}
   - {fileID: 1745294317}
+  - {fileID: 237635901}
   m_Father: {fileID: 1782757441}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28645,6 +28645,16 @@ Prefab:
         type: 2}
       propertyPath: m_gameTime
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 114214193561040744, guid: 1a9e645f77a571e4a9777b823a47fabb,
+        type: 2}
+      propertyPath: m_sfxTimeMin
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114214193561040744, guid: 1a9e645f77a571e4a9777b823a47fabb,
+        type: 2}
+      propertyPath: m_sfxTimeMax
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a9e645f77a571e4a9777b823a47fabb, type: 2}

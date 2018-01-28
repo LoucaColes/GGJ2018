@@ -18,6 +18,11 @@ public class GameManager : MonoBehaviour
     public float m_gameTime;
     public float m_gameTimer;
 
+    public float m_sfxTimeMin;
+    public float m_sfxTimeMax;
+    private float m_sfxTime;
+    private float m_sfxTimer;
+
     // Use this for initialization
     private void Awake()
     {
@@ -37,6 +42,9 @@ public class GameManager : MonoBehaviour
         m_gameState = GameState.Play;
         m_score = 0;
         m_gameTimer = m_gameTime;
+        AudioManager.AudioManager.m_instance.PlayMusic(0);
+        m_sfxTimer = 0;
+        m_sfxTime = Random.Range(m_sfxTimeMin, m_sfxTimeMax);
         //CanvasManager.m_instance.m_hud.GetComponent<HUDCanvas>().UpdateHudScore(m_score);
     }
 
@@ -53,6 +61,17 @@ public class GameManager : MonoBehaviour
         {
             m_gameState = GameState.Pause;
             CanvasManager.m_instance.UpdateCanvases(m_gameState);
+        }
+
+        if (m_gameState == GameState.Play)
+        {
+            m_sfxTimer += Time.deltaTime;
+            if (m_sfxTimer > m_sfxTime)
+            {
+                AudioManager.AudioManager.m_instance.PlaySFX(Random.Range(0, 4));
+                m_sfxTime = Random.Range(m_sfxTimeMin, m_sfxTimeMax);
+                m_sfxTimer = 0;
+            }
         }
 
         if (m_enableTimer)
