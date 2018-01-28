@@ -33293,7 +33293,7 @@ MonoBehaviour:
   m_gameType: 0
   m_gameState: 0
   m_enableTimer: 1
-  m_gameTime: 30
+  m_gameTime: 210
   m_gameTimer: 0
   m_sfxTimeMin: 2
   m_sfxTimeMax: 5
