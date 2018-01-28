@@ -52,6 +52,8 @@ public class Menu : MonoBehaviour
         {
             if (m_player.GetAxis("MoveVert") > 0 || m_player.GetAxis("MoveHor") > 0)
             {
+                int t = Random.Range(0, 12);
+                AudioManager.AudioManager.m_instance.PlaySFX(t);
                 m_buttonIndex++;
                 if (m_buttonIndex >= m_buttons.Length)
                 {
@@ -61,6 +63,9 @@ public class Menu : MonoBehaviour
             }
             else if (m_player.GetAxis("MoveVert") < 0 || m_player.GetAxis("MoveHor") < 0)
             {
+                int t = Random.Range(0, 12);
+                AudioManager.AudioManager.m_instance.PlaySFX(t);
+
                 m_buttonIndex--;
                 if (m_buttonIndex < 0)
                 {
@@ -72,6 +77,8 @@ public class Menu : MonoBehaviour
 
         if (m_player.GetButtonDown("Accept"))
         {
+            int t = Random.Range(0, 12);
+            AudioManager.AudioManager.m_instance.PlaySFX(t);
             switch (m_buttons[m_buttonIndex].name)
             {
                 case "Game1Button":
@@ -103,6 +110,9 @@ public class Menu : MonoBehaviour
 
         if (m_player.GetButtonDown("Back"))
         {
+            int t = Random.Range(0, 12);
+            AudioManager.AudioManager.m_instance.PlaySFX(t);
+
             switch (SceneLoader.m_instance.GetCurrentScene())
             {
                 case "MainMenu":
